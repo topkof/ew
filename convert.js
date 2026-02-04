@@ -1,9 +1,7 @@
 const fs = require("fs");
 
-// 读取 test.json
 const input = JSON.parse(fs.readFileSync("test.json", "utf8"));
 
-// 构建新结构
 const result = {
   cache_time: 7200,
   api_site: {}
@@ -16,7 +14,6 @@ input.forEach(item => {
   };
 });
 
-// 覆盖写回 test.json
-fs.writeFileSync("test.json", JSON.stringify(result, null, 4));
+fs.writeFileSync("converted.json", JSON.stringify(result, null, 4));
 
-console.log("已覆盖 test.json");
+console.log("转换完成！");
