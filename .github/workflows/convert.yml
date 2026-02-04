@@ -1,22 +1,32 @@
-const fs = require("fs");
+name: Convert JSON Format
 
-// 读取 test.json
-const input = JSON.parse(fs.readFileSync("test.json", "utf8"));
+on:
+  push:
+    paths:
+      - "test.json"
+  workflow_dispatch:
 
-// 构建新结构
-const result = {
-  cache_time: 7200，
-  api_site: {}
-};
+jobs:
+  convert:
+    runs-on: ubuntu-latest
 
-input.forEach(item => {
-  result.api_site[item.id] = {
-    api: item.baseUrl,
-    name: item.name
-  };
-});
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
 
-// 覆盖写回 test.json
-fs.writeFileSync("test.json", JSON.stringify(result, null, 4));
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
 
-console.log("已覆盖 test.json");
+      - name: Run conversion script
+        run: |
+          node convert.js
+
+      - name: Commit changes
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add test.json
+          git commit -m "Auto convert JSON format" || echo "No changes"
+          git push
