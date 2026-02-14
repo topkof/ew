@@ -1,5 +1,5 @@
 {
-    "cache_time": 7200,
+    "cache_time": 28800,
     "api_site": {
         "155": {
             "api": "https://155api.com/api.php/provide/vod",
